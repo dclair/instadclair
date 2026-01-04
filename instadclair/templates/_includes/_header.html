@@ -1,0 +1,22 @@
+<header>
+    <div class="container">
+    <h1>InstaDclair</h1>
+    <nav>
+        <ul>
+        <li><a href="{% url 'home' %}">Inicio</a></li>
+        <li><a href="{% url 'profile_list' %}">Perfiles</a></li>
+        {% if not user.is_authenticated %}
+        <li><a href="{% url 'login' %}">Login</a></li>
+        <li><a href="{% url 'register' %}">Register</a></li>
+        {% else %}        
+        <li><a href="{% url 'logout' %}">Logout</a></li>
+        <li><a href="{% url 'post_create' %}">Crear Post</a></li>
+        <li><a href="{% url 'profile' request.user.profile.pk %}">Mi Perfil</a></li>
+        {% endif %}
+        
+        <li><a href="{% url 'contact' %}">Contacto</a></li>
+        <li><a href="{% url 'legal' %}">Legal</a></li>
+    </ul>
+    </nav>
+    </div>
+</header>

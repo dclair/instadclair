@@ -1,0 +1,110 @@
+{% extends "general/layout.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block head_title %}Editar Perfil - {{ user.username }}{% endblock %}
+
+{% block content %}
+{% block page_title %}{% endblock page_title %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-white text-center">
+                    <h1 class="h4 mb-0">
+                        <i class="bi bi-pencil-square me-2"></i>Editar perfil
+                    </h1>
+                </div>
+
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        <!-- Foto de perfil -->
+                        <div class="text-center mb-4">
+                            <div class="position-relative d-inline-block">
+                                {% if user.profile.profile_picture %}
+                                    <img src="{{ user.profile.profile_picture.url }}" 
+                                         class="rounded-circle shadow"
+                                         style="width:150px;height:150px;object-fit:cover;"
+                                         id="profile-preview">
+                                {% else %}
+                                    <div class="rounded-circle shadow bg-light d-flex align-items-center justify-content-center" 
+                                         style="width:150px;height:150px;">
+                                        <i class="bi bi-person-fill text-muted" style="font-size: 4rem;"></i>
+                                    </div>
+                                {% endif %}
+                                <label for="id_profile_picture"
+                                       class="btn btn-primary btn-sm rounded-circle position-absolute bottom-0 end-0"
+                                       style="transform: translate(-10px, -10px);">
+                                    <i class="bi bi-camera"></i>
+                                </label>
+                                {{ profile_form.profile_picture|as_crispy_field }}
+                            </div>
+                        </div>
+
+                        <!-- Resto del formulario... -->
+                        <h5 class="mb-3">Datos de usuario</h5>
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">{{ user_form.username|as_crispy_field }}</div>
+                            <div class="col-md-6">{{ user_form.email|as_crispy_field }}</div>
+                            <div class="col-md-6">{{ user_form.first_name|as_crispy_field }}</div>
+                            <div class="col-md-6">{{ user_form.last_name|as_crispy_field }}</div>
+                        </div>
+
+                        <h5 class="mb-3">Datos del perfil</h5>
+                        <div class="row g-3">
+                            <div class="col-12">{{ profile_form.bio|as_crispy_field }}</div>
+                            <div class="col-md-6">{{ profile_form.birth_date|as_crispy_field }}</div>
+                            <div class="col-md-6">{{ profile_form.location|as_crispy_field }}</div>
+                            <div class="col-12">{{ profile_form.website|as_crispy_field }}</div>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <a href="{% url 'profile' user.profile.id %}" class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-left me-1"></i> Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-save me-1"></i> Guardar cambios
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const profilePictureInput = document.getElementById('id_profile_picture');
+    const profilePreview = document.getElementById('profile-preview');
+    
+    if (profilePictureInput) {
+        profilePictureInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    if (profilePreview) {
+                        profilePreview.src = e.target.result;
+                        profilePreview.style.display = 'block';
+                    } else {
+                        // Si no existe el preview, lo creamos
+                        const preview = document.createElement('img');
+                        preview.id = 'profile-preview';
+                        preview.src = e.target.result;
+                        preview.className = 'rounded-circle shadow';
+                        preview.style = 'width:150px;height:150px;object-fit:cover;';
+                        document.querySelector('.position-relative').prepend(preview);
+                    }
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+    }
+});
+</script>
+{% endblock %}

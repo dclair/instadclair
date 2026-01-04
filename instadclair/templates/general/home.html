@@ -1,0 +1,22 @@
+
+<!-- ========== EXTENSIÓN DE LA PLANTILLA BASE ========== -->
+{% extends "general/layout.html" %}
+
+<!-- ========== TÍTULO DE LA PÁGINA EN LA PESTAÑA ========== -->
+{% block head_title %}
+Bienvenido a InstaDclair
+{% endblock head_title %}
+
+<!-- ========== TÍTULO PRINCIPAL DE LA PÁGINA ========== -->
+{% block page_title %}
+<div class="container-fluid px-4 mt-4">
+    <h1 class="fw-bold h2">Últimas Publicaciones</h1>
+</div>
+{% endblock page_title %}
+
+<!-- ========== CONTENIDO PRINCIPAL ========== -->
+{% block content %}
+{% include '_includes/_post.html' with posts=last_posts %}
+<!-- FIN CONTENIDO PRINCIPAL -->
+{% endblock content %}
+</file-view>
