@@ -16,7 +16,7 @@ Including another URLconf
 """
 
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from instadclair.views import LoginView  # o donde tengas tu vista de login
@@ -32,10 +32,18 @@ from .views import (
     ProfileUpdateView,
     ProfilesListView,
 )
-from posts.views import PostCreateView, PostDetailView, like_post, like_post_ajax
+
+# from posts.views import (
+#     PostCreateView,
+#     PostDetailView,
+#     like_post,
+#     like_post_ajax,
+#     add_comment,
+# )
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("", include("posts.urls")),  # Incluye las URLs de la app posts
     path("", HomeView.as_view(), name="home"),
     path("legal/", LegalView.as_view(), name="legal"),
     path("login/", LoginView.as_view(), name="login"),
@@ -45,10 +53,11 @@ urlpatterns = [
     path("profile/list/", ProfilesListView.as_view(), name="profile_list"),
     path("profile/<int:pk>", ProfileView.as_view(), name="profile"),
     path("profile/edit/", ProfileUpdateView.as_view(), name="profile_edit"),
-    path("posts/create/", PostCreateView.as_view(), name="post_create"),
-    path("post/<int:pk>/", PostDetailView.as_view(), name="post_detail"),
-    path("post/<int:post_id>/like/", like_post, name="like_post"),
-    path("post/like-ajax/<pk>/", like_post_ajax, name="like_post_ajax"),
+    # path("posts/create/", PostCreateView.as_view(), name="post_create"),
+    # path("post/<int:pk>/", PostDetailView.as_view(), name="post_detail"),
+    # path("post/<int:post_id>/like/", like_post, name="like_post"),
+    # path("post/like-ajax/<pk>/", like_post_ajax, name="like_post_ajax"),
+    # path("post/<int:post_id>/comment/", add_comment, name="add_comment"),
 ]
 
 # Configuración para servir archivos multimedia en desarrollo

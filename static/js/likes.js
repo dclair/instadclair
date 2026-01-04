@@ -33,6 +33,15 @@ document.addEventListener("DOMContentLoaded", function () {
         if (likeCount && likeCount.classList.contains("like-count")) {
           likeCount.textContent = data.count;
         }
+
+        // Actualizar el contador de likes en el encabezado de la tarjeta si existe
+        const likeCountHeader = this.closest(".card").querySelector(".fw-bold");
+        if (
+          likeCountHeader &&
+          likeCountHeader.textContent.includes("me gusta")
+        ) {
+          likeCountHeader.textContent = `${data.count} me gusta`;
+        }
       } catch (error) {
         console.error("Error:", error);
         if (error.message.includes("401")) {

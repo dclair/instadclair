@@ -80,7 +80,7 @@
         {% for post in user_profile.user.posts.all %}
             <div class="col-4">
                 <div class="ratio ratio-1x1">
-                    <a href="{% url 'post_detail' post.pk %}">
+                    <a href="{% url 'posts:post_detail' post.pk %}">
                         {% if post.image %}
                             <img src="{{ post.image.url }}" 
                                  class="img-fluid w-100 h-100 shadow-sm" 

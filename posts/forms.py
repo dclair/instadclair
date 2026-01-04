@@ -1,5 +1,5 @@
 from django import forms
-from .models import Posts
+from .models import Posts, Comment
 
 
 class PostCreateForm(forms.ModelForm):
@@ -44,3 +44,19 @@ class ProfileFollowForm(forms.Form):
         if not profile_pk:
             raise forms.ValidationError("El ID del perfil es requerido.")
         return profile_pk
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ["comment"]
+        widgets = {
+            "comment": forms.Textarea(
+                attrs={
+                    "class": "form-control",
+                    "rows": 3,
+                    "placeholder": "Añade un comentario...",
+                    "required": True,
+                }
+            )
+        }
