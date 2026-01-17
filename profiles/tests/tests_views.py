@@ -1,7 +1,7 @@
 from django.test import TestCase, override_settings
 from profiles.models import UserProfile, Follow
 from django.contrib.auth.models import User
-
+from django.urls import reverse
 from django.core.files.storage import FileSystemStorage
 from django.conf import settings
 import shutil
@@ -61,4 +61,22 @@ class TestUserProfileViews(TestCase):
 
         # 5. Verificar que el usuario devuelto es testuser2
         self.assertEqual(users_in_context[0].user.username, "testuser2")
+
+        # 6. Verificar que el usuario autenticado no está en la lista
+        print("=== Verificando que el usuario autenticado no está en la lista ===")
+        self.assertNotIn(self.user_profile, users_in_context)
         print("=== Prueba de vista de perfiles completada exitosamente ===")
+
+        # 7. probar que la lista de perfiles se muestra correctamente
+        print("=== Probando la vista de lista de perfiles ===")
+        url = reverse("profile_list")
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        print("=== Prueba de vista de lista de perfiles completada exitosamente ===")
+
+        # 8 probar vista detalle del perfil
+        print("=== Probando la vista de detalle del perfil ===")
+        url = reverse("profile", kwargs={"pk": self.user2_profile.id})
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        print("=== Prueba de vista de detalle del perfil completada exitosamente ===")
